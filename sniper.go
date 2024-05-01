@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -134,7 +133,7 @@ func init() {
 		log.Fatal("Error: Couldn't determine working directory: " + err.Error())
 	}
 	os.Chdir(executablePath)
-	file, err := ioutil.ReadFile("settings.json")
+	file, err := os.ReadFile("settings.json")
 	if err != nil {
 		fatalWithTime("[x] Failed read file: " + err.Error())
 		time.Sleep(4 * time.Second)
@@ -168,6 +167,7 @@ func inviteTimerEnd() {
 func run(token string, finished chan bool, index int) {
 	currentToken = token
 	dg, err := discordgo.New(token)
+	dg.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 	if err != nil {
 		fatalWithTime("[x] Error creating Discord session for " + token + "," + err.Error())
 	} else {
